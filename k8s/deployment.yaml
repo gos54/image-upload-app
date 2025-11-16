@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: image-gallery
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: image-gallery
+  template:
+    metadata:
+      labels:
+        app: image-gallery
+    spec:
+      containers:
+      - name: image-gallery
+        image: cr.yandex/crpnq5gfo3m7alvcvomq/image-gallery-app:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: ConnectionStrings__DefaultConnection
+          valueFrom:
+            secretKeyRef:
+              name: db-secret
+              key: connection-string
+        - name: YandexCloud__ObjectStorage__AccessKey
+          valueFrom:
+            secretKeyRef:
+              name: storage-secret
+              key: access-key
+        - name: YandexCloud__ObjectStorage__SecretKey
+          valueFrom:
+            secretKeyRef:
+              name: storage-secret
+              key: secret-key
+        - name: YandexCloud__ObjectStorage__BucketName
+          value: "image-gallery-bucket"
+        - name: YandexCloud__ObjectStorage__ServiceUrl
+          value: "https://storage.yandexcloud.net"
+        - name: ASPNETCORE_ENVIRONMENT
+          value: "Production"
+        - name: ASPNETCORE_URLS
+          value: "http://*:80"
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
