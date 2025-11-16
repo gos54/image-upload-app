@@ -50,6 +50,7 @@ jobs:
       run: |
         curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i $HOME/.local
         echo "$HOME/.local/bin" >> $GITHUB_PATH
+        source ~/.bashrc
         yc version
     
     - name: Configure Yandex Cloud
@@ -80,8 +81,16 @@ jobs:
       run: |
         curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -i $HOME/.local
         echo "$HOME/.local/bin" >> $GITHUB_PATH
+        source ~/.bashrc
+        
         curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-        install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+        chmod +x kubectl
+        mkdir -p $HOME/.local/bin
+        mv kubectl $HOME/.local/bin/
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        
+        yc version
+        kubectl version --client
     
     - name: Configure Yandex Cloud
       run: |
