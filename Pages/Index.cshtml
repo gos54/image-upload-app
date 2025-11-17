@@ -7,12 +7,11 @@
 <div class="container mt-4">
     <div class="text-center mb-5">
         <h1 class="display-4 text-primary mb-3">Image Gallery</h1>
-        <p class="lead text-muted">Upload and manage your images easily</p>
     </div>
 
     <div class="card shadow-lg mb-5">
         <div class="card-header bg-primary text-white">
-            <h5 class="mb-0"><i class="fas fa-cloud-upload-alt me-2"></i>Upload New Image</h5>
+            <h5 class="mb-0">Upload New Image</h5>
         </div>
         <div class="card-body">
             <form method="post" enctype="multipart/form-data" id="uploadForm">
@@ -21,12 +20,11 @@
                     <input type="file" class="form-control" id="imageFile" name="ImageFile"
                            accept=".jpg,.jpeg,.png,.gif" required>
                     <div class="form-text">
-                        <i class="fas fa-info-circle me-1"></i>
                         Supported formats: JPEG, PNG, GIF | Max size: 10MB
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary btn-lg">
-                    <i class="fas fa-upload me-2"></i>Upload Image
+                    Upload Image
                 </button>
             </form>
         </div>
@@ -34,7 +32,7 @@
 
     <div class="card shadow-lg">
         <div class="card-header bg-success text-white">
-            <h5 class="mb-0"><i class="fas fa-images me-2"></i>Uploaded Images</h5>
+            <h5 class="mb-0">Uploaded Images</h5>
         </div>
         <div class="card-body">
             @if (Model.Images != null && Model.Images.Any())
@@ -47,7 +45,6 @@
                         <div class="image-container position-relative">
                             <img src="@image.FilePath" class="card-img-top" alt="@image.FileName"
                                  loading="lazy" style="height: 200px; object-fit: cover;">
-                            <div class="image-overlay"></div>
                         </div>
                         <div class="card-body">
                             <h6 class="card-title text-truncate" title="@image.FileName">
@@ -55,11 +52,9 @@
                             </h6>
                             <div class="d-flex justify-content-between align-items-center">
                                 <small class="text-muted">
-                                    <i class="fas fa-calendar me-1"></i>
                                     @image.UploadDate.ToString("dd.MM.yyyy HH:mm")
                                 </small>
                                 <small class="text-muted">
-                                    <i class="fas fa-hdd me-1"></i>
                                     @((image.FileSize / 1024f / 1024f).ToString("0.00")) MB
                                 </small>
                             </div>
@@ -72,7 +67,6 @@
             else
             {
             <div class="text-center py-5">
-                <i class="fas fa-images fa-4x text-muted mb-3"></i>
                 <h4 class="text-muted">No images uploaded yet</h4>
                 <p class="text-muted">Start by uploading your first image using the form above.</p>
             </div>
@@ -96,78 +90,92 @@
 </div>
 
 <style>
-    .card {
-        border: none;
-        border-radius: 15px;
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
     }
 
-        .card:hover {
-            transform: translateY(-5px);
-        }
+    .card {
+        border: 1px solid #e0e0e0;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        background: white;
+    }
+
+    .card-header {
+        background: #f8f9fa;
+        padding: 15px 20px;
+        border-bottom: 1px solid #e0e0e0;
+        font-weight: 600;
+    }
+
+    .card-body {
+        padding: 20px;
+    }
 
     .image-card {
+        transition: transform 0.2s ease;
         cursor: pointer;
-        overflow: hidden;
     }
 
-    .image-container {
-        overflow: hidden;
-    }
+        .image-card:hover {
+            transform: scale(1.02);
+        }
 
-    .image-card img {
-        transition: transform 0.3s ease;
-    }
-
-    .image-card:hover img {
-        transform: scale(1.05);
-    }
-
-    .image-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(to bottom, transparent 70%, rgba(0,0,0,0.1));
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    .image-card:hover .image-overlay {
-        opacity: 1;
-    }
+        .image-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #f5f5f5;
+        }
 
     .btn-primary {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        background: #007bff;
         border: none;
-        border-radius: 25px;
-        padding: 10px 30px;
-        font-weight: 600;
-        transition: all 0.3s ease;
+        padding: 10px 20px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
     }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            background: #0056b3;
         }
 
-    .card-header {
-        border-radius: 15px 15px 0 0 !important;
-        font-weight: 600;
+    .form-control {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        margin-bottom: 10px;
+    }
+
+    .row {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .text-muted {
+        color: #6c757d;
     }
 </style>
 
 @section Scripts {
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const imageCards = document.querySelectorAll('.image-card');
             const modal = new bootstrap.Modal(document.getElementById('imageModal'));
             const modalImage = document.getElementById('modalImage');
             const modalTitle = document.getElementById('modalImageTitle');
 
             imageCards.forEach(card => {
-                card.addEventListener('click', function() {
+                card.addEventListener('click', function () {
                     const img = this.querySelector('img');
                     modalImage.src = img.src;
                     modalTitle.textContent = img.alt;

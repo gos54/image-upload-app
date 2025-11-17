@@ -11,14 +11,12 @@ builder.Configuration
     .AddEnvironmentVariables();
 
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
 
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IImageService, YandexImageService>();
 
-builder.Services.AddMemoryCache();
 
 var app = builder.Build();
 
